@@ -10,9 +10,10 @@ import Foundation
 @propertyWrapper
 @dynamicMemberLookup
 public struct WeakObject<Object: AnyObject> {
-    private let lock = NSLock()
-    private weak var object: Object?
+    @usableFromInline let lock = NSLock()
+    @usableFromInline weak var object: Object?
     
+    @inlinable
     public var wrappedValue: Object? {
         get { object }
         set {
@@ -22,14 +23,17 @@ public struct WeakObject<Object: AnyObject> {
         }
     }
     
+    @inlinable
     public var isEmpty: Bool {
         object != nil
     }
     
+    @inlinable
     public init(_ object: Object) {
         self.object = object
     }
     
+    @inlinable
     public subscript<T>(dynamicMember writableKeyPath: WritableKeyPath<Object?, T>) -> T {
         wrappedValue[keyPath: writableKeyPath]
     }
