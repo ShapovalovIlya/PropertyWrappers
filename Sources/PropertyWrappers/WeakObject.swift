@@ -9,11 +9,11 @@ import Foundation
 
 @propertyWrapper
 @dynamicMemberLookup
-public struct WeakObject {
+public struct WeakObject<Object: AnyObject> {
     private let lock = NSLock()
-    private weak var object: AnyObject?
+    private weak var object: Object?
     
-    public var wrappedValue: AnyObject? {
+    public var wrappedValue: Object? {
         get { object }
         set {
             lock.withLock {
@@ -26,11 +26,11 @@ public struct WeakObject {
         object != nil
     }
     
-    public init(_ object: AnyObject) {
+    public init(_ object: Object) {
         self.object = object
     }
     
-    public subscript<T>(dynamicMember writableKeyPath: WritableKeyPath<AnyObject?, T>) -> T {
+    public subscript<T>(dynamicMember writableKeyPath: WritableKeyPath<Object?, T>) -> T {
         wrappedValue[keyPath: writableKeyPath]
     }
     
