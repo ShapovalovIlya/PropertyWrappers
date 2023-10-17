@@ -18,6 +18,7 @@ public struct UserDefaultsStorage<Value> {
         set { storage.set(newValue, forKey: key) }
     }
     
+    @available(macOS 11.0, *)
     public var projectedValue: AnyPublisher<Value, UserDefaultsError> {
         storage.value(forKey: key)
             .publisher
